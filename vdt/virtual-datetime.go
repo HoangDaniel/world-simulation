@@ -2,6 +2,42 @@ package vdt
 
 import "fmt"
 
+type VirtualDateTime struct {
+	Day    int
+	Month  int
+	Year   int
+	Second int
+	Minute int
+	Hour   int
+}
+
+func NewVirtualDateTime() *VirtualDateTime {
+	return &VirtualDateTime{
+		Day:    1,
+		Month:  1,
+		Year:   1,
+		Second: 0,
+		Minute: 0,
+		Hour:   0,
+	}
+}
+
+func (t *VirtualDateTime) increaseYear() {
+	t.Year++
+}
+
+func (t *VirtualDateTime) Date() string {
+	return fmt.Sprintf("%v-%v-%v", t.Day, t.Month, t.Year)
+}
+
+func (t *VirtualDateTime) Time() string {
+	return fmt.Sprintf("%v:%v:%v", t.Hour, t.Minute, t.Second)
+}
+
+func (t *VirtualDateTime) DateTime() string {
+	return fmt.Sprintf("%v %v", t.Date(), t.Time())
+}
+
 func (t *VirtualDateTime) ForwardSecond() {
 	if t.Second >= 59 {
 		t.Second = 0
@@ -74,40 +110,4 @@ func (t *VirtualDateTime) increaseMonth() {
 		return
 	}
 	t.Month++
-}
-
-func (t *VirtualDateTime) increaseYear() {
-	t.Year++
-}
-
-type VirtualDateTime struct {
-	Day    int
-	Month  int
-	Year   int
-	Second int
-	Minute int
-	Hour   int
-}
-
-func (t *VirtualDateTime) Date() string {
-	return fmt.Sprintf("%v-%v-%v", t.Day, t.Month, t.Year)
-}
-
-func (t *VirtualDateTime) Time() string {
-	return fmt.Sprintf("%v:%v:%v", t.Hour, t.Minute, t.Second)
-}
-
-func (t *VirtualDateTime) DateTime() string {
-	return fmt.Sprintf("%v %v", t.Date(), t.Time())
-}
-
-func NewVirtualDateTime() *VirtualDateTime {
-	return &VirtualDateTime{
-		Day:    1,
-		Month:  1,
-		Year:   1,
-		Second: 0,
-		Minute: 0,
-		Hour:   0,
-	}
 }
