@@ -2,12 +2,42 @@ package vdt
 
 import "fmt"
 
-func (t *VirtualDateTime) IncreaseSecond() {
+func (t *VirtualDateTime) ForwardSecond() {
 	if t.Second >= 59 {
 		t.Second = 0
 		t.increaseMinute()
 	}
 	t.Second++
+}
+
+func (t *VirtualDateTime) ForwardMinute() {
+	for i := 0; i < 60; i++ {
+		t.ForwardSecond()
+	}
+}
+
+func (t *VirtualDateTime) ForwardHour() {
+	for i := 0; i < 60; i++ {
+		t.ForwardMinute()
+	}
+}
+
+func (t *VirtualDateTime) ForwardDay() {
+	for i := 0; i < 24; i++ {
+		t.ForwardHour()
+	}
+}
+
+func (t *VirtualDateTime) ForwardMonth() {
+	for i := 0; i < 30; i++ {
+		t.ForwardDay()
+	}
+}
+
+func (t *VirtualDateTime) ForwardYear() {
+	for i := 0; i < 12; i++ {
+		t.ForwardMonth()
+	}
 }
 
 func (t *VirtualDateTime) increaseMinute() {

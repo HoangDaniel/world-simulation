@@ -8,15 +8,21 @@ import (
 )
 
 func main() {
+	virtualTimeTicker := time.NewTicker(250 * time.Millisecond)
+	realSecondTicker := time.NewTicker(1 * time.Second)
 
-	ticker := time.NewTicker(1 * time.Nanosecond)
+	defer virtualTimeTicker.Stop()
+	defer realSecondTicker.Stop()
+
 	vt := vdt.NewVirtualDateTime()
+	fmt.Println("New Age started with date time: %v", vt.DateTime())
 
-	fmt.Print("New Age started with date time: %v", vt.DateTime())
-	defer ticker.Stop()
-
-	for range ticker.C {
-		vt.IncreaseSecond()
-		fmt.Println(vt.DateTime())
+	for {
+		select {
+		case <-virtualTimeTicker.C:
+			vt.ForwardMonth()
+		case <-realSecondTicker.C:
+			fmt.Println(vt.DateTime())
+		}
 	}
 }
