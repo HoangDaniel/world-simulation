@@ -64,7 +64,7 @@ func broadcastTime(ts *timeservice.TimeService) {
 }
 
 func main() {
-	startTime := time.Date(0, 1, 1, 0, 0, 0, 0, time.UTC)
+	startTime := time.Date(1960, 1, 1, 0, 0, 0, 0, time.UTC)
 	ts := timeservice.NewTimeService(startTime)
 	ts.SetSpeed(60)
 	corsOpts := handlers.CORS(
