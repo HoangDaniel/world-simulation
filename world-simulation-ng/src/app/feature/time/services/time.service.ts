@@ -19,7 +19,6 @@ export class TimeService {
     }
 
     setSpeed(speed: number): Observable<any> {
-        console.log('haaalooo')
         return this.http.post(`${this.apiUrl}/setSpeed`, { speed })
     }
 
