@@ -1,3 +1,3 @@
-module hoang.sk/world
+module hoangdaniel/world
 
 go 1.21.6
