@@ -1,1 +1,19 @@
-{{ (currentTime$ | async) | date:'medium' }}
+<ng-container *ngIf="{paused: paused$ | async} as data">
+    {{ (currentTime$ | async) | date:'medium' }}
+
+    <button (click)="resume()" *ngIf="data.paused">Resume</button>
+    <button (click)="pause()" *ngIf="!data.paused">Pause</button>
+
+    <label for="speedSelect">Set Speed:</label>
+    <select id="speedSelect" (change)="setSpeed($event)">
+        <option value="1">1x</option>
+        <option value="5">5x</option>
+        <option value="10">10x</option>
+        <option value="25">25x</option>
+        <option value="60" selected>60x</option>
+        <option value="100">100x</option>
+        <option value="1000">1000x</option>
+        <option value="10000">10000x</option>
+        <option value="100000">100000x</option>
+    </select>
+</ng-container>

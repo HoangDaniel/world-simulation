@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/websocket"
 )
 
@@ -66,6 +67,12 @@ func main() {
 	startTime := time.Date(0, 1, 1, 0, 0, 0, 0, time.UTC)
 	ts := timeservice.NewTimeService(startTime)
 	ts.SetSpeed(60)
+	corsOpts := handlers.CORS(
+		handlers.AllowedOrigins([]string{"*"}),
+		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
+		handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
+		handlers.AllowCredentials(),
+	)
 
 	http.HandleFunc("/ws", handleConnections)
 	go broadcastTime(ts)
@@ -81,8 +88,18 @@ func main() {
 		ts.SetSpeed(speed.Speed)
 	})
 
+	http.HandleFunc("/pause", func(w http.ResponseWriter, r *http.Request) {
+		ts.Pause()
+		w.WriteHeader(http.StatusOK)
+	})
+
+	http.HandleFunc("/resume", func(w http.ResponseWriter, r *http.Request) {
+		ts.Resume()
+		w.WriteHeader(http.StatusOK)
+	})
+
 	log.Println("Server started on :8080")
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8080", corsOpts(http.DefaultServeMux))
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
